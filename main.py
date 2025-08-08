@@ -354,9 +354,6 @@ need_training = (
 if need_training and (st.session_state.dt_params_applied or not any([key.startswith('current_') for key in st.session_state.keys()])):
     model_type = twin_models[selected_twin_model]
     
-    # Showing training status
-    #st.markdown('<div class="twin-status calibrating">Digital Twin Calibration in Progress</div>', unsafe_allow_html=True)
-
     if model_type in ['lstm', 'cnn_lstm', 'conv1d', 'gru', 'bilstm']:
         with st.spinner("✅Calibrating neural network architecture..."):
             X_seq, y_seq = create_sequences(df_train, 'n_flows', observation_window, selected_network_features)
@@ -802,3 +799,4 @@ else:
     st.write(f"Time Range: {len(df_train)} time steps")
     st.write(f"Primary Target: Network Flow Count (n_flows)")
     st.markdown('</div>', unsafe_allow_html=True)
+
