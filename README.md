@@ -1,1 +1,62 @@
-# NewProject
+# Project Name
+
+Brief description of what your project does.
+
+## Project Structure
+
+```
+├── Data/                   # Data directory containing datasets
+├── README.md              # This file
+├── data_loader.py         # Data loading utilities
+├── main.py               # Main execution file
+├── model_architectures.py # Model definitions and architectures
+├── training_utils.py      # Training helper functions
+└── visualization_utils.py # Visualization and plotting utilities
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.x
+- Required Python packages (add your specific requirements here)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
+```
+
+2. Install required dependencies:
+```bash
+pip install -r requirements.txt
+```
+*(Note: Create a requirements.txt file with your project dependencies)*
+
+### Usage
+
+Run the main script:
+```bash
+python main.py
+```
+
+**Important:** Ensure all files and the `Data/` folder are in the same directory as `main.py` for the project to work correctly.
+
+## File Descriptions
+
+- **main.py** - The main entry point of the application
+- **data_loader.py** - Handles data loading and preprocessing
+- **model_architectures.py** - Contains model definitions and neural network architectures
+- **training_utils.py** - Utility functions for model training
+- **visualization_utils.py** - Functions for creating plots and visualizations
+- **Data/** - Directory containing all dataset files
+
+## Contributing
+
+Feel free to submit issues and pull requests.
+
+## License
+
+Add your license information here.
