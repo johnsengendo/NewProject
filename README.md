@@ -12,7 +12,7 @@
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository or dowloading the zip file for it
 ```bash
 git clone https://github.com/johnsengendo/NewProject
 ```
