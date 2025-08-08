@@ -147,7 +147,7 @@ CSV_FILEPATH = os.path.join(DATA_DIR, CSV_FILENAME)
 
 # Page setup
 st.set_page_config(
-    page_title="Network Digital Twin Platform", 
+    page_title="🌐Network Digital Twin Platform", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -155,7 +155,7 @@ st.set_page_config(
 # Main header with professional styling
 st.markdown("""
 <div class="main-header">
-    <h1>Network Digital Twin Platform</h1>
+    <h1>🌐Network Digital Twin Platform</h1>
     <p>Advanced Network Flow Modeling and Predictive Analytics System</p>
 </div>
 """, unsafe_allow_html=True)
@@ -231,7 +231,7 @@ temp_observation_window = st.sidebar.slider(
     help="Number of historical time steps for pattern recognition"
 )
 temp_simulation_cycles = st.sidebar.slider(
-    "Training Epochs", 
+    "Simulation_cycles", 
     10, 200, 
     st.session_state.current_simulation_cycles, 
     help="Number of training iterations for twin calibration"
@@ -239,7 +239,7 @@ temp_simulation_cycles = st.sidebar.slider(
 batch_options = [16, 32, 64, 128]
 current_batch_index = batch_options.index(st.session_state.current_processing_batch) if st.session_state.current_processing_batch in batch_options else 1
 temp_processing_batch = st.sidebar.selectbox(
-    "Batch Size", 
+    "Processing_batch", 
     batch_options, 
     index=current_batch_index, 
     help="Data batch size for twin processing"
@@ -281,8 +281,8 @@ temp_selected_twin_model = st.sidebar.selectbox(
 st.sidebar.markdown("### Validation Configuration")
 temp_validation_period = st.sidebar.slider(
     "Validation Period", 
-    50, 
-    min(500, len(df_train)//2), 
+    500, 
+    min(1000, len(df_train)//2), 
     st.session_state.current_validation_period, 
     help="Number of recent observations for twin validation"
 )
@@ -314,7 +314,7 @@ if apply_settings:
     st.session_state.current_use_normalization = temp_use_normalization
     st.session_state.current_normalization_method = temp_normalization_method
     st.session_state.dt_params_applied = True
-    st.markdown('<div class="status-card success">Digital Twin configuration applied successfully</div>', unsafe_allow_html=True)
+    st.success("✅ Digital Twin settings applied successfully!")
 
 # Using applied settings for processing
 observation_window = st.session_state.current_observation_window
@@ -354,7 +354,7 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
     st.markdown('<div class="twin-status calibrating">Digital Twin Calibration in Progress</div>', unsafe_allow_html=True)
 
     if model_type in ['lstm', 'cnn_lstm', 'conv1d', 'gru', 'bilstm']:
-        with st.spinner("Calibrating neural network architecture..."):
+        with st.spinner("✅Calibrating neural network architecture..."):
             X_seq, y_seq = create_sequences(df_train, 'n_flows', observation_window, selected_network_features)
             train_size = len(X_seq) - validation_period
             X_train, X_test = X_seq[:train_size], X_seq[train_size:]
@@ -537,7 +537,7 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
     train_range = np.arange(len(y_train))
     test_range = np.arange(len(y_train), len(y_train) + len(y_test_aligned))
     
-    ax1.plot(train_range, y_train, label='Historical Network Data', color='#6c757d', alpha=0.7, linewidth=1)
+    ax1.plot(train_range, y_train, label='Historical Network Data', color="#080c79", alpha=0.7, linewidth=1)
     ax1.plot(test_range, y_test_aligned, label='Actual Network Flow', color='#28a745', linewidth=2)
     ax1.plot(test_range, y_pred_aligned, label=f'Digital Twin Prediction', color='#dc3545', linewidth=2, linestyle='--')
     ax1.axvline(x=len(y_train), color='#fd7e14', linestyle=':', linewidth=2, label='Training/Validation Split')
@@ -786,8 +786,8 @@ elif hasattr(st.session_state, 'trained_model'):
             st.markdown('</div>', unsafe_allow_html=True)
 
 else:
-    st.markdown('<div class="twin-status calibrating">Digital Twin Configuration Required</div>', unsafe_allow_html=True)
-    st.markdown('<div class="status-card warning"><strong>Configuration Pending:</strong> Please configure the digital twin parameters in the control panel and click "Apply Configuration" to begin training.</div>', unsafe_allow_html=True)
+    st.markdown('Digital Twin Configuration Required', unsafe_allow_html=True)
+    st.markdown('<div class="status-card warning"><strong>Configuration Pending:</strong> Please configure the digital twin parameters in the control panel and click "Apply Configuration" to begin calibrating.</div>', unsafe_allow_html=True)
     
     # Showing available data information
     st.markdown('<div class="section-header">Available Training Data</div>', unsafe_allow_html=True)
@@ -800,7 +800,7 @@ else:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Testing New Data Section
-st.markdown('<div class="section-header">Test Digital Twin with New Network Data</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Test/Inference Digital Twin with New Network Data</div>', unsafe_allow_html=True)
 st.markdown('<div class="status-card info"><strong>Inference Testing:</strong> Upload new network traffic data to test your trained digital twin model on unseen data and evaluate its real-world performance.</div>', unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader(
