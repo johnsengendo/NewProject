@@ -1,4 +1,3 @@
-# Importing necessary libraries
 import sys
 import os
 import streamlit as st
@@ -32,20 +31,20 @@ st.markdown("""
         margin-bottom: 2rem;
         text-align: center;
     }
-
+    
     .main-header h1 {
         color: white;
         font-size: 2.5rem;
         margin-bottom: 0.5rem;
         font-weight: 700;
     }
-
+    
     .main-header p {
         font-size: 1.2rem;
         opacity: 0.9;
         margin: 0;
     }
-
+    
     .status-card {
         background: #f8f9fa;
         border: 2px solid #e9ecef;
@@ -53,27 +52,27 @@ st.markdown("""
         padding: 1.5rem;
         margin: 1rem 0;
     }
-
+    
     .status-card.success {
         border-color: #28a745;
         background: #d4edda;
     }
-
+    
     .status-card.warning {
         border-color: #ffc107;
         background: #fff3cd;
     }
-
+    
     .status-card.error {
         border-color: #dc3545;
         background: #f8d7da;
     }
-
+    
     .status-card.info {
         border-color: #17a2b8;
         background: #d1ecf1;
     }
-
+    
     .metric-container {
         background: white;
         border: 1px solid #dee2e6;
@@ -82,7 +81,7 @@ st.markdown("""
         margin: 0.5rem 0;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
+    
     .section-header {
         background: #343a40;
         color: white;
@@ -92,7 +91,7 @@ st.markdown("""
         font-size: 1.3rem;
         font-weight: 600;
     }
-
+    
     .config-section {
         background: #f8f9fa;
         border-left: 4px solid #007bff;
@@ -100,7 +99,7 @@ st.markdown("""
         margin: 1rem 0;
         border-radius: 0 8px 8px 0;
     }
-
+    
     .twin-status {
         padding: 1rem;
         border-radius: 8px;
@@ -108,32 +107,32 @@ st.markdown("""
         text-align: center;
         font-weight: 600;
     }
-
+    
     .twin-status.operational {
         background: #d4edda;
         color: #155724;
         border: 2px solid #28a745;
     }
-
+    
     .twin-status.calibrating {
         background: #fff3cd;
         color: #856404;
         border: 2px solid #ffc107;
     }
-
+    
     .twin-status.error {
         background: #f8d7da;
         color: #721c24;
         border: 2px solid #dc3545;
     }
-
+    
     .performance-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
         margin: 1rem 0;
     }
-
+    
     .stSelectbox label, .stSlider label, .stMultiSelect label, .stCheckbox label {
         font-weight: 600;
         color: #495057;
@@ -148,7 +147,7 @@ CSV_FILEPATH = os.path.join(DATA_DIR, CSV_FILENAME)
 
 # Configuring page setup for Streamlit
 st.set_page_config(
-    page_title="🌐Network Digital Twin Platform",
+    page_title="Network Digital Twin Platform", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -157,18 +156,23 @@ st.set_page_config(
 st.markdown("""
 <div class="main-header">
     <h1>🌐Network Digital Twin Platform</h1>
-    <p>Advanced Network Flow Modeling and Predictive Analytics System</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Loading data from CSV file
 df_train = load_data(CSV_FILEPATH)
 
-# Initializing uploaded file variable
-uploaded_file = None
+# File upload section
+st.markdown('<div class="section-header">Inference with new data upload after DT calibration</div>', unsafe_allow_html=True)
+uploaded_file = st.file_uploader(
+    "Upload Network Traffic Data (CSV format)", 
+    type=["csv"], 
+    help="CSV file must include 'n_flows' column for flow predictions"
+)
+
 if uploaded_file is not None:
     df_test = load_uploaded_data(uploaded_file)
-    st.markdown('<div class="status-card success">Custom network traffic data is loading successfully. Inference mode is activating.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="status-card success">Custom network traffic data loaded successfully. Inference mode activated.</div>', unsafe_allow_html=True)
     inference_mode = True
 else:
     df_test = None
@@ -205,7 +209,7 @@ if 'current_normalization_method' not in st.session_state:
 st.sidebar.markdown("### System Controls")
 col1, col2 = st.sidebar.columns(2)
 with col1:
-    if st.button("Reset Configuration", help="Resetting all parameters to default values", type="secondary"):
+    if st.button("Reset Configuration", help="Reset all parameters to default values", type="secondary"):
         st.session_state.current_observation_window = 20
         st.session_state.current_simulation_cycles = 50
         st.session_state.current_processing_batch = 32
@@ -220,29 +224,29 @@ with col1:
         st.session_state.dt_params_applied = False
         st.experimental_rerun()
 with col2:
-    apply_settings = st.button("Apply Configuration", help="Applying current settings to digital twin", type="primary")
+    apply_settings = st.button("Apply Configuration", help="Apply current settings to digital twin", type="primary")
 
 # Configuring network digital twin specific parameters
 st.sidebar.markdown("### Twin Architecture Parameters")
 temp_observation_window = st.sidebar.slider(
-    "Observation Window",
-    5, 100,
-    st.session_state.current_observation_window,
-    help="Setting number of historical time steps for pattern recognition"
+    "Observation Window", 
+    5, 100, 
+    st.session_state.current_observation_window, 
+    help="Number of historical time steps for pattern recognition"
 )
 temp_simulation_cycles = st.sidebar.slider(
-    "Simulation_cycles",
-    10, 200,
-    st.session_state.current_simulation_cycles,
-    help="Setting number of training iterations for twin calibration"
+    "Simulation_cycles", 
+    10, 200, 
+    st.session_state.current_simulation_cycles, 
+    help="Number of training iterations for twin calibration"
 )
 batch_options = [16, 32, 64, 128]
 current_batch_index = batch_options.index(st.session_state.current_processing_batch) if st.session_state.current_processing_batch in batch_options else 1
 temp_processing_batch = st.sidebar.selectbox(
-    "Processing_batch",
-    batch_options,
-    index=current_batch_index,
-    help="Setting data batch size for twin processing"
+    "Processing_batch", 
+    batch_options, 
+    index=current_batch_index, 
+    help="Data batch size for twin processing"
 )
 
 # Selecting network parameters
@@ -251,10 +255,10 @@ network_parameters = df_train.columns.tolist()
 if "n_flows" in network_parameters:
     network_parameters.remove("n_flows")
 temp_selected_network_features = st.sidebar.multiselect(
-    "Additional Network Parameters",
-    options=network_parameters,
-    default=st.session_state.current_network_features,
-    help="Selecting additional network metrics to include in the digital twin model"
+    "Additional Network Parameters", 
+    options=network_parameters, 
+    default=st.session_state.current_network_features, 
+    help="Additional network metrics to include in the digital twin model"
 )
 
 # Selecting digital twin model architecture
@@ -272,35 +276,35 @@ twin_models = {
 }
 current_model_index = list(twin_models.keys()).index(st.session_state.current_twin_model) if st.session_state.current_twin_model in twin_models.keys() else 0
 temp_selected_twin_model = st.sidebar.selectbox(
-    "Digital Twin Engine",
-    list(twin_models.keys()),
+    "Digital Twin Engine", 
+    list(twin_models.keys()), 
     index=current_model_index
 )
 
 # Setting validation configuration
 st.sidebar.markdown("### Validation Configuration")
 temp_validation_period = st.sidebar.slider(
-    "Validation Period",
-    500,
-    min(1000, len(df_train)//2),
-    st.session_state.current_validation_period,
-    help="Setting number of recent observations for twin validation"
+    "Validation Period", 
+    500, 
+    min(1000, len(df_train)//2), 
+    st.session_state.current_validation_period, 
+    help="Number of recent observations for twin validation"
 )
 
 # Configuring data preprocessing
 st.sidebar.markdown("### Data Preprocessing")
 temp_use_normalization = st.sidebar.checkbox(
-    "Enable Data Normalization",
-    value=st.session_state.current_use_normalization,
-    help="Enabling data normalization for optimal twin performance"
+    "Enable Data Normalization", 
+    value=st.session_state.current_use_normalization, 
+    help="Normalize input data for optimal twin performance"
 )
 normalization_options = ["MinMax Scaling", "Standard Scaling"]
 current_norm_index = normalization_options.index(st.session_state.current_normalization_method) if st.session_state.current_normalization_method in normalization_options else 0
 temp_normalization_method = st.sidebar.selectbox(
-    "Normalization Method",
-    normalization_options,
-    index=current_norm_index,
-    help="Selecting method for data preprocessing"
+    "Normalization Method", 
+    normalization_options, 
+    index=current_norm_index, 
+    help="Method for data preprocessing"
 )
 
 # Applying settings when the button is clicked
@@ -329,6 +333,7 @@ normalization_method = st.session_state.current_normalization_method
 def check_model_compatibility():
     if 'model_config' not in st.session_state:
         return False
+
     config = st.session_state.model_config
     return (
         config['observation_window'] == observation_window and
@@ -345,43 +350,53 @@ need_training = (
      not check_model_compatibility() or
      st.session_state.dt_params_applied)
 )
+
 if need_training and (st.session_state.dt_params_applied or not any([key.startswith('current_') for key in st.session_state.keys()])):
     model_type = twin_models[selected_twin_model]
-
+    
     # Showing training status
-    st.markdown('<div class="twin-status calibrating">Calibrating digital twin in progress</div>', unsafe_allow_html=True)
+    #st.markdown('<div class="twin-status calibrating">Digital Twin Calibration in Progress</div>', unsafe_allow_html=True)
+
     if model_type in ['lstm', 'cnn_lstm', 'conv1d', 'gru', 'bilstm']:
         with st.spinner("✅Calibrating neural network architecture..."):
             X_seq, y_seq = create_sequences(df_train, 'n_flows', observation_window, selected_network_features)
             train_size = len(X_seq) - validation_period
             X_train, X_test = X_seq[:train_size], X_seq[train_size:]
             y_train, y_test = y_seq[:train_size], y_seq[train_size:]
+
             scaler = None
             if use_normalization:
                 if normalization_method == "MinMax Scaling":
                     scaler = MinMaxScaler()
                 else:
                     scaler = StandardScaler()
+
                 X_train_reshaped = X_train.reshape(-1, X_train.shape[-1])
                 X_test_reshaped = X_test.reshape(-1, X_test.shape[-1])
+
                 X_train_scaled = scaler.fit_transform(X_train_reshaped)
                 X_test_scaled = scaler.transform(X_test_reshaped)
+
                 X_train = X_train_scaled.reshape(X_train.shape)
                 X_test = X_test_scaled.reshape(X_test.shape)
+
     else:
         with st.spinner("Configuring statistical model architecture..."):
             X, y = create_traditional_features(df_train, 'n_flows', 10, selected_network_features)
             train_size = len(X) - validation_period
             X_train, X_test = X.iloc[:train_size], X.iloc[train_size:]
             y_train, y_test = y.iloc[:train_size], y.iloc[train_size:]
+
             scaler = None
             if use_normalization and len(X.columns) > 0:
                 if normalization_method == "MinMax Scaling":
                     scaler = MinMaxScaler()
                 else:
                     scaler = StandardScaler()
+
                 X_train = pd.DataFrame(scaler.fit_transform(X_train), columns=X_train.columns, index=X_train.index)
                 X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns, index=X_test.index)
+
     with st.spinner(f"Training {selected_twin_model} architecture..."):
         try:
             if model_type == 'lstm':
@@ -389,29 +404,35 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
                 early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
                 history = model.fit(X_train, y_train, epochs=simulation_cycles, batch_size=processing_batch, validation_split=0.2, callbacks=[early_stopping], verbose=0)
                 y_pred = model.predict(X_test, verbose=0).flatten()
+
             elif model_type == 'cnn_lstm':
                 model = create_cnn_lstm_model((X_train.shape[1], X_train.shape[2]))
                 early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
                 history = model.fit(X_train, y_train, epochs=simulation_cycles, batch_size=processing_batch, validation_split=0.2, callbacks=[early_stopping], verbose=0)
                 y_pred = model.predict(X_test, verbose=0).flatten()
+
             elif model_type == 'conv1d':
                 model = create_conv1d_model((X_train.shape[1], X_train.shape[2]))
                 early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
                 history = model.fit(X_train, y_train, epochs=simulation_cycles, batch_size=processing_batch, validation_split=0.2, callbacks=[early_stopping], verbose=0)
                 y_pred = model.predict(X_test, verbose=0).flatten()
+
             elif model_type == 'gru':
                 model = create_gru_model((X_train.shape[1], X_train.shape[2]))
                 early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
                 history = model.fit(X_train, y_train, epochs=simulation_cycles, batch_size=processing_batch, validation_split=0.2, callbacks=[early_stopping], verbose=0)
                 y_pred = model.predict(X_test, verbose=0).flatten()
+
             elif model_type == 'bilstm':
                 model = create_bidirectional_lstm_model((X_train.shape[1], X_train.shape[2]))
                 early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
                 history = model.fit(X_train, y_train, epochs=simulation_cycles, batch_size=processing_batch, validation_split=0.2, callbacks=[early_stopping], verbose=0)
                 y_pred = model.predict(X_test, verbose=0).flatten()
+
             elif model_type == "arima":
                 best_aic = float('inf')
                 best_model = None
+
                 for p in range(0, 3):
                     for d in range(0, 2):
                         for q in range(0, 3):
@@ -423,11 +444,14 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
                                     best_model = fitted_model
                             except:
                                 continue
+
                 if best_model is None:
                     arima_model = ARIMA(y_train, order=(1, 1, 1))
                     best_model = arima_model.fit()
+
                 model = best_model
                 y_pred = model.forecast(steps=len(y_test))
+
             elif model_type == "exp_smoothing":
                 try:
                     exp_model = ExponentialSmoothing(y_train, seasonal='add' if len(y_train) > 24 else None, seasonal_periods=min(24, len(y_train)//2) if len(y_train) > 24 else None)
@@ -437,16 +461,19 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
                     exp_model = ExponentialSmoothing(y_train, trend='add')
                     model = exp_model.fit()
                     y_pred = model.forecast(steps=len(y_test))
+
             elif model_type == "rf":
                 model = RandomForestRegressor(n_estimators=100, random_state=42)
                 model.fit(X_train, y_train)
                 y_pred = model.predict(X_test)
+
             elif model_type == "gb":
                 model = GradientBoostingRegressor(n_estimators=100, random_state=42)
                 model.fit(X_train, y_train)
                 y_pred = model.predict(X_test)
+
         except Exception as e:
-            st.markdown(f'<div class="status-card error">Digital twin calibration is failing: {e}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="status-card error">Digital twin calibration failed: {e}</div>', unsafe_allow_html=True)
             st.stop()
 
     # Storing model and configurations
@@ -460,15 +487,15 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
         'normalization_method': normalization_method,
         'selected_twin_model': selected_twin_model
     }
-
-    st.markdown('<div class="twin-status operational">Calibrating and operating digital twin successfully</div>', unsafe_allow_html=True)
+    
+    st.markdown('✅Digital Twin Successfully Calibrated and Operational we can perforn inferencing with uploading new data', unsafe_allow_html=True)
 
     # Calculating metrics
     metrics, y_test_aligned, y_pred_aligned = calculate_metrics(y_test, y_pred)
 
     # Displaying performance dashboard
     st.markdown('<div class="section-header">Digital Twin Performance Dashboard</div>', unsafe_allow_html=True)
-
+    
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.markdown('<div class="metric-container">', unsafe_allow_html=True)
@@ -493,28 +520,28 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
 
     # Assessing performance
     if metrics['r2'] >= 0.8 and metrics['mape'] <= 10:
-        st.markdown('<div class="status-card success"><strong>Production Ready:</strong> Achieving high fidelity network representation. Digital twin is ready for operational deployment.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="status-card success"><strong>Production Ready:</strong> High fidelity network representation achieved. Digital twin is ready for operational deployment.</div>', unsafe_allow_html=True)
     elif metrics['r2'] >= 0.6 and metrics['mape'] <= 20:
         st.markdown('<div class="status-card info"><strong>Operational Status:</strong> Digital twin is suitable for network monitoring and basic predictions.</div>', unsafe_allow_html=True)
     elif metrics['r2'] >= 0.4:
-        st.markdown('<div class="status-card warning"><strong>Calibration Required:</strong> Considering parameter tuning or additional network features for improved performance.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="status-card warning"><strong>Calibration Required:</strong> Consider parameter tuning or additional network features for improved performance.</div>', unsafe_allow_html=True)
     else:
-        st.markdown('<div class="status-card error"><strong>Reconfiguration Needed:</strong> Requiring significant improvements for reliable operation.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="status-card error"><strong>Reconfiguration Needed:</strong> Significant improvements required for reliable operation.</div>', unsafe_allow_html=True)
 
     # Visualizing network flow prediction analysis
     st.markdown('<div class="section-header">Network Flow Prediction Analysis</div>', unsafe_allow_html=True)
-
+    
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10))
-
+    
     # Setting professional styling for plots
     plt.style.use('default')
     fig.patch.set_facecolor('white')
-
+    
     total_len = len(y_train) + len(y_test_aligned)
     train_range = np.arange(len(y_train))
     test_range = np.arange(len(y_train), len(y_train) + len(y_test_aligned))
-
-    ax1.plot(train_range, y_train, label='Historical Network Data', color="#080c79", alpha=0.7, linewidth=1)
+    
+    ax1.plot(train_range, y_train, label='Historical Network Data', color="#023a6c", alpha=0.7, linewidth=1)
     ax1.plot(test_range, y_test_aligned, label='Actual Network Flow', color='#28a745', linewidth=2)
     ax1.plot(test_range, y_pred_aligned, label=f'Digital Twin Prediction', color='#dc3545', linewidth=2, linestyle='--')
     ax1.axvline(x=len(y_train), color='#fd7e14', linestyle=':', linewidth=2, label='Training/Validation Split')
@@ -524,6 +551,7 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
     ax1.legend(loc='upper left')
     ax1.grid(True, alpha=0.3)
     ax1.set_facecolor('#f8f9fa')
+
     test_start = max(0, len(y_train) - 50)
     zoom_train_range = np.arange(test_start, len(y_train))
     zoom_train_data = y_train[test_start:] if hasattr(y_train, '__getitem__') else y_train.iloc[test_start:]
@@ -537,17 +565,18 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
     ax2.legend(loc='upper left')
     ax2.grid(True, alpha=0.3)
     ax2.set_facecolor('#f8f9fa')
-
+    
     plt.tight_layout()
     st.pyplot(fig)
 
     # Analyzing prediction accuracy
     st.markdown('<div class="section-header">Prediction Accuracy Analysis</div>', unsafe_allow_html=True)
-
+    
     col1, col2 = st.columns(2)
     with col1:
         errors = y_test_aligned - y_pred_aligned
         error_range = np.arange(len(errors))
+
         fig, ax = plt.subplots(figsize=(10, 6))
         fig.patch.set_facecolor('white')
         ax.plot(error_range, errors, color='#dc3545', alpha=0.7)
@@ -559,7 +588,7 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
         ax.grid(True, alpha=0.3)
         ax.set_facecolor('#f8f9fa')
         st.pyplot(fig)
-
+        
     with col2:
         fig, ax = plt.subplots(figsize=(10, 6))
         fig.patch.set_facecolor('white')
@@ -571,47 +600,61 @@ if need_training and (st.session_state.dt_params_applied or not any([key.startsw
         ax.grid(True, alpha=0.3)
         ax.set_facecolor('#f8f9fa')
         st.pyplot(fig)
+
     st.session_state.dt_params_applied = False
+
 elif inference_mode:
     st.markdown('<div class="section-header">Digital Twin Inference Mode</div>', unsafe_allow_html=True)
+
     if not hasattr(st.session_state, 'trained_model'):
         st.markdown('<div class="status-card error"><strong>No Trained Model Available</strong><br>Please train the digital twin first by:<br>1. Remove the uploaded file temporarily<br>2. Configure and train the model<br>3. Re-upload your file for inference</div>', unsafe_allow_html=True)
         st.stop()
-
+        
     if 'model_config' not in st.session_state:
         st.markdown('<div class="status-card error"><strong>Model Configuration Missing</strong><br>Please train the model first.</div>', unsafe_allow_html=True)
         st.stop()
+
     try:
         trained_model = st.session_state.trained_model
         trained_scaler = st.session_state.trained_scaler
         trained_model_type = st.session_state.trained_model_type
         model_config = st.session_state.model_config
+
         inference_observation_window = model_config['observation_window']
         inference_network_features = model_config['selected_network_features']
         inference_use_normalization = model_config['use_normalization']
+
         with st.spinner("Processing inference on uploaded network data..."):
             if trained_model_type in ['lstm', 'cnn_lstm', 'gru', 'conv1d', 'bilstm']:
                 X_new, y_new = create_sequences(df_test, 'n_flows', inference_observation_window, inference_network_features)
+
                 if len(X_new) == 0:
                     st.markdown(f'<div class="status-card error"><strong>Insufficient Data</strong><br>Uploaded data is too short. Need at least {inference_observation_window + 1} observations for sequence creation.</div>', unsafe_allow_html=True)
                     st.stop()
+
                 if trained_scaler is not None:
                     X_new_reshaped = X_new.reshape(-1, X_new.shape[-1])
                     X_new_scaled = trained_scaler.transform(X_new_reshaped)
                     X_new = X_new_scaled.reshape(X_new.shape)
+
                 y_pred_new = trained_model.predict(X_new, verbose=0).flatten()
+
             else:
                 X_new, y_new = create_traditional_features(df_test, 'n_flows', 10, inference_network_features)
+
                 if len(X_new) == 0:
                     st.markdown('<div class="status-card error"><strong>Feature Creation Failed</strong><br>Could not create features from uploaded data. Please check data format.</div>', unsafe_allow_html=True)
                     st.stop()
+
                 if trained_scaler is not None and len(X_new.columns) > 0:
                     X_new_scaled = trained_scaler.transform(X_new)
                     X_new = pd.DataFrame(X_new_scaled, columns=X_new.columns, index=X_new.index)
+
                 if trained_model_type in ['arima', 'exp_smoothing']:
                     y_pred_new = trained_model.forecast(steps=len(y_new))
                 else:
                     y_pred_new = trained_model.predict(X_new)
+
         inference_metrics, y_new_aligned, y_pred_new_aligned = calculate_metrics(y_new, y_pred_new)
 
         # Displaying inference results dashboard
@@ -642,7 +685,7 @@ elif inference_mode:
         st.markdown("### Network Flow Predictions on Uploaded Data")
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10))
         fig.patch.set_facecolor('white')
-
+        
         time_indices = np.arange(len(y_new_aligned))
         ax1.plot(time_indices, y_new_aligned, label="Actual Flow", color="#28a745", linewidth=2)
         ax1.plot(time_indices, y_pred_new_aligned, label="Digital Twin Prediction", color="#dc3545", linestyle="--", linewidth=2)
@@ -652,6 +695,7 @@ elif inference_mode:
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         ax1.set_facecolor('#f8f9fa')
+
         errors_new = y_new_aligned - y_pred_new_aligned
         ax2.plot(time_indices, errors_new, color='#dc3545', alpha=0.7, label="Prediction Errors")
         ax2.axhline(y=0, color='#343a40', linestyle='--', alpha=0.5)
@@ -662,7 +706,7 @@ elif inference_mode:
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         ax2.set_facecolor('#f8f9fa')
-
+        
         plt.tight_layout()
         st.pyplot(fig)
 
@@ -689,6 +733,7 @@ elif inference_mode:
             st.write(f"Maximum Flow: {df_train['n_flows'].max():.2f}")
             st.write(f"Data Points: {len(df_train):,}")
             st.markdown('</div>', unsafe_allow_html=True)
+
         with col2:
             st.markdown('<div class="config-section">', unsafe_allow_html=True)
             st.markdown("**Uploaded Data Characteristics**")
@@ -703,23 +748,26 @@ elif inference_mode:
         train_mean = df_train['n_flows'].mean()
         test_mean = df_test['n_flows'].mean()
         mean_diff_pct = abs(test_mean - train_mean) / train_mean * 100
+
         if mean_diff_pct <= 10:
             st.markdown(f'<div class="status-card success"><strong>Data Compatibility Confirmed</strong><br>Uploaded data characteristics are very similar to training data (mean difference: {mean_diff_pct:.1f}%). High confidence in predictions.</div>', unsafe_allow_html=True)
         elif mean_diff_pct <= 25:
             st.markdown(f'<div class="status-card info"><strong>Acceptable Data Variance</strong><br>Some differences detected between datasets (mean difference: {mean_diff_pct:.1f}%). Predictions should be reliable with moderate confidence.</div>', unsafe_allow_html=True)
         else:
             st.markdown(f'<div class="status-card warning"><strong>Significant Data Drift Detected</strong><br>Substantial differences from training data (mean difference: {mean_diff_pct:.1f}%). Consider model retraining or domain adaptation for optimal performance.</div>', unsafe_allow_html=True)
+
     except Exception as e:
         st.markdown(f'<div class="status-card error"><strong>Inference Processing Error</strong><br>Error during inference: {str(e)}<br><br>Please ensure your uploaded data has the same format and features as the training data.</div>', unsafe_allow_html=True)
+
 elif hasattr(st.session_state, 'trained_model'):
     st.markdown('<div class="twin-status operational">Digital Twin Model Ready for Deployment</div>', unsafe_allow_html=True)
     st.markdown('<div class="status-card info"><strong>System Status:</strong> Pre-trained model is loaded and ready for inference. Upload a CSV file to generate network flow predictions.</div>', unsafe_allow_html=True)
-
+    
     # Showing current model configuration
     if 'model_config' in st.session_state:
         config = st.session_state.model_config
         st.markdown('<div class="section-header">Current Digital Twin Configuration</div>', unsafe_allow_html=True)
-
+        
         col1, col2 = st.columns(2)
         with col1:
             st.markdown('<div class="config-section">', unsafe_allow_html=True)
@@ -730,7 +778,7 @@ elif hasattr(st.session_state, 'trained_model'):
             if config['use_normalization']:
                 st.write(f"Normalization Method: {config['normalization_method']}")
             st.markdown('</div>', unsafe_allow_html=True)
-
+            
         with col2:
             st.markdown('<div class="config-section">', unsafe_allow_html=True)
             st.markdown("**Network Features**")
@@ -740,10 +788,11 @@ elif hasattr(st.session_state, 'trained_model'):
             else:
                 st.write("• Primary flow data only")
             st.markdown('</div>', unsafe_allow_html=True)
+
 else:
     st.markdown('Digital Twin Configuration Required', unsafe_allow_html=True)
-    st.markdown('<div class="status-card warning"><strong>Configuration Pending:</strong> Please configure the digital twin parameters in the control panel and click "Apply Configuration" to begin calibrating.</div>', unsafe_allow_html=True)
-
+    st.markdown('<div class="status-card warning"><strong>Configuration Pending:</strong> Please configure the digital twin parameters in the control panel and click "Apply Configuration" to begin training before Inference .</div>', unsafe_allow_html=True)
+    
     # Showing available data information
     st.markdown('<div class="section-header">Available Training Data</div>', unsafe_allow_html=True)
     st.markdown('<div class="config-section">', unsafe_allow_html=True)
@@ -753,13 +802,3 @@ else:
     st.write(f"Time Range: {len(df_train)} time steps")
     st.write(f"Primary Target: Network Flow Count (n_flows)")
     st.markdown('</div>', unsafe_allow_html=True)
-
-# Testing new data section
-st.markdown('<div class="section-header">Test/Inference Digital Twin with New Network Data</div>', unsafe_allow_html=True)
-st.markdown('<div class="status-card info"><strong>Inference Testing:</strong> Upload new network traffic data to test your trained digital twin model on unseen data and evaluate its real-world performance.</div>', unsafe_allow_html=True)
-uploaded_file = st.file_uploader(
-    "Upload New Network Traffic for Inference Testing",
-    type=["csv"],
-    help="Upload CSV file with same format as training data. Must include 'n_flows' column for predictions.",
-    key="inference_uploader"
-)
