@@ -14,11 +14,6 @@ Brief description of what your project does.
 └── visualization_utils.py # Visualization and plotting utilities
 ```
 
-### Prerequisites
-
-- Python 3.x
-- Required Python packages (add your specific requirements here)
-
 ### Installation
 
 1. Clone the repository:
