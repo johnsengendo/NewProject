@@ -37,7 +37,7 @@ Running the main script:
 - **model_architectures.py** - Contains model definitions and neural network architectures
 - **training_utils.py** - Utility functions for model training
 - **visualization_utils.py** - Functions for creating plots and visualizations
-- **Data/** - Directory containing all dataset files
+- **Data/** - Directory containing all dataset files 543.csv for training and the rest for inferece
 
 ## Results
 <img src="DT_Performance.png" width="1000"/>  
