@@ -14,8 +14,6 @@ Brief description of what your project does.
 └── visualization_utils.py # Visualization and plotting utilities
 ```
 
-## Getting Started
-
 ### Prerequisites
 
 - Python 3.x
@@ -25,21 +23,18 @@ Brief description of what your project does.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/johnsengendo/NewProject
 ```
 
 2. Install required dependencies:
-```bash
-pip install -r requirements.txt
-```
-*(Note: Create a requirements.txt file with your project dependencies)*
+
+pip install Streamlit
 
 ### Usage
 
 Run the main script:
 ```bash
-python main.py
+ streamlit run main.py
 ```
 
 **Important:** Ensure all files and the `Data/` folder are in the same directory as `main.py` for the project to work correctly.
@@ -53,10 +48,6 @@ python main.py
 - **visualization_utils.py** - Functions for creating plots and visualizations
 - **Data/** - Directory containing all dataset files
 
-## Contributing
-
-Feel free to submit issues and pull requests.
-
-## License
+## Results
 
 Add your license information here.
