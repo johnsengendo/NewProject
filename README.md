@@ -44,6 +44,6 @@ Run the main script:
 - **Data/** - Directory containing all dataset files
 
 ## Results
-<img src="image1.png" width="500"/>  
-<img src="image2.png" width="500"/>
+<img src="DT_Performance.png" width="500"/>  
+<img src="Validation.png" width="500"/>
 
