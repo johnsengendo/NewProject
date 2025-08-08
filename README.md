@@ -23,7 +23,7 @@ pip install Streamlit
 
 ### Usage
 
-Run the main script:
+Running the main script:
 ```bash
  streamlit run main.py
 ```
