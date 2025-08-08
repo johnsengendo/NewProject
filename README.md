@@ -17,7 +17,7 @@
 git clone https://github.com/johnsengendo/NewProject
 ```
 
-2. Install required dependencies:
+2. Installing required dependencies:
 
 pip install Streamlit
 
@@ -28,7 +28,7 @@ Running the main script:
  streamlit run main.py
 ```
 
-**Important:** Ensure all files and the `Data/` folder are in the same directory as `main.py` for the project to work correctly.
+**Important:** Ensuring all files and the `Data/` folder are in the same directory as `main.py` for the project to work correctly.
 
 ## File Descriptions
 
