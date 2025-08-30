@@ -43,3 +43,10 @@ Running the main script:
 <img src="DT_Performance.png" width="1000"/>  
 <img src="Validation.png" width="1000"/>
 
+## Improved DT interface
+<img src="interface.png" width="1000"/> 
+
+## Effect of varying training and prediction intervals
+<img src="moretraining data.png" width="1000"/> 
+<img src="More_Training_data.png" width="1000"/> 
+<img src="1month prediction, 2 weeks taining.png" width="1000"/> 
