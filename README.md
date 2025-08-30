@@ -55,3 +55,6 @@ Running the main script:
 
 ## 1 week training interval and 1 month prediction
 <img src="1month prediction, 2 weeks taining.png" width="1000"/> 
+
+## Operational Framework
+<img src="Framework.png" width="1000"/> 
