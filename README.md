@@ -49,7 +49,9 @@ Running the main script:
 ## Effect of varying training and prediction intervals
 ## 6 months training interval and 1 week prediction
 <img src="moretraining data.png" width="1000"/> 
+
 ## 1 month training interval and 1 day prediction
 <img src="More_Training_data.png" width="1000"/> 
+
 ## 1 week training interval and 1 month prediction
 <img src="1month prediction, 2 weeks taining.png" width="1000"/> 
