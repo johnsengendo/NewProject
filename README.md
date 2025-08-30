@@ -4,7 +4,7 @@
 ├── Data/                   # Data directory containing datasets
 ├── README.md              # This file
 ├── data_loader.py         # Data loading utilities
-├── main.py               # Main execution file
+├── main_updated.py               # Main execution file
 ├── model_architectures.py # Model definitions and architectures
 ├── training_utils.py      # Training helper functions
 └── visualization_utils.py # Visualization and plotting utilities
@@ -25,16 +25,16 @@ pip install Streamlit
 
 Running the main script:
 ```bash
- streamlit run main.py
+ streamlit main_updated.py
 ```
 
 **Important:** Ensuring all files and the `Data/` folder are in the same directory as `main.py` for the project to work correctly.
 
 ## File Descriptions
 
-- **main.py** - The main entry point of the application
+- **main_updated.py** - The main entry point of the application
 - **data_loader.py** - Handles data loading and preprocessing
-- **model_architectures.py** - Contains model definitions and neural network architectures
+- **model_architectures.py** - Contains DT model definitions and neural network architectures
 - **training_utils.py** - Utility functions for model training
 - **visualization_utils.py** - Functions for creating plots and visualizations
 - **Data/** - Directory containing all dataset files 543.csv for training and the rest for inferece
